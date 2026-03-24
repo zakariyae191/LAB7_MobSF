@@ -1,11 +1,11 @@
-# 📱 Laboratoire de Sécurité Android — Analyse Dynamique avec MobSF (DIVA)
+#  Laboratoire de Sécurité Android — Analyse Dynamique avec MobSF (DIVA)
 
 > **École :** EMSI &nbsp;|&nbsp; **Filière :** Cybersécurité / Génie Informatique &nbsp;|&nbsp; **Auteur :** Mhttaj zakariyae
 
 
 ---
 
-## 🟢 Étape 1 — Création de l'émulateur AVD sans Play Store (10 min)
+##  Étape 1 — Création de l'émulateur AVD sans Play Store (10 min)
 
 L'analyse dynamique avec MobSF nécessite un émulateur **rooté**, ce qui est impossible avec les images Play Store. Il faut donc créer un AVD avec une image **Google APIs** ou **AOSP**.
 
@@ -35,7 +35,7 @@ Pixel_4_API_29
 
 ---
 
-## 🟢 Étape 2 — Cloner MobSF pour utiliser les scripts AVD officiels (2 min)
+##  Étape 2 — Cloner MobSF pour utiliser les scripts AVD officiels (2 min)
 
 MobSF fournit des scripts officiels pour lancer l'émulateur correctement rooté et prêt pour l'analyse dynamique.
 
@@ -63,7 +63,7 @@ Les scripts importants :
 
 ---
 
-## 🟢 Étape 3 — Lancement de l'émulateur avec le script MobSF (rooté & prêt pour l'analyse)
+##  Étape 3 — Lancement de l'émulateur avec le script MobSF (rooté & prêt pour l'analyse)
 
 Ce script lance l'émulateur avec les options nécessaires pour l'analyse dynamique (accès root, proxy réseau, frida server...).
 
@@ -106,7 +106,7 @@ adb remount
 remount succeeded
 ```
 
-> ⚠️ Si `adb remount` échoue, vérifiez que l'image utilisée est bien **Google APIs** et non **Google Play**.
+>  Si `adb remount` échoue, vérifiez que l'image utilisée est bien **Google APIs** et non **Google Play**.
 
 <img width="844" height="269" alt="etape3p1" src="https://github.com/user-attachments/assets/3f2e5c4c-fcb9-4394-ab07-6782ea63f158" />
 <img width="739" height="702" alt="etape3p2" src="https://github.com/user-attachments/assets/b0915832-da79-4cc4-8a7b-23f315c0ba29" />
@@ -116,7 +116,7 @@ remount succeeded
 
 ---
 
-## 🟢 Étape 4 — Installation et lancement de MobSF via Docker (5 min)
+##  Étape 4 — Installation et lancement de MobSF via Docker (5 min)
 
 Docker est la méthode la plus simple pour lancer MobSF sans configuration complexe.
 
@@ -153,7 +153,7 @@ http://127.0.0.1:8000
 
 ---
 
-## 🟢 Étape 5 — Téléchargement de l'APK DIVA (Damn Insecure and Vulnerable App)
+##  Étape 5 — Téléchargement de l'APK DIVA (Damn Insecure and Vulnerable App)
 
 DIVA est une application Android volontairement vulnérable, conçue pour apprendre la sécurité mobile.
 
@@ -185,7 +185,7 @@ Success
 
 ---
 
-## 🟢 Étape 6 — Analyse Statique + Dynamique de DIVA (le cœur du lab)
+##  Étape 6 — Analyse Statique + Dynamique de DIVA (le cœur du lab)
 
 ### 6.1 Analyse Statique
 
@@ -214,7 +214,7 @@ Success
 
 ---
 
-#### 🔴 Test 1 — Journalisation Non Sécurisée (Insecure Logging)
+####  Test 1 — Journalisation Non Sécurisée (Insecure Logging)
 
 **Dans DIVA :** Ouvrir `Insecure Logging` → saisir des données → valider
 
@@ -234,7 +234,7 @@ on click sur cette icon pour commence lanalyse
 
 ---
 
-#### 🔴 Test 2 — Identifiants en Dur (Hardcoded Credentials)
+####  Test 2 — Identifiants en Dur (Hardcoded Credentials)
 
 **Dans DIVA :** Ouvrir `Hardcoded Issues`
 
@@ -245,12 +245,12 @@ String vendorKey = "VendorKey123";
 String secret    = "SUPERSecret@123";
 ```
 
-**⚠️ Risque :** La rétro-ingénierie de l'APK expose immédiatement les secrets via `jadx` ou `apktool`.
+** Risque :** La rétro-ingénierie de l'APK expose immédiatement les secrets via `jadx` ou `apktool`.
 
 
 ---
 
-#### 🟠 Test 3 — Stockage Non Sécurisé (Insecure Data Storage)
+####  Test 3 — Stockage Non Sécurisé (Insecure Data Storage)
 
 **Dans DIVA :** Ouvrir `Insecure Data Storage` → saisir et enregistrer des données
 
@@ -267,27 +267,27 @@ cat shared_prefs/jakhar.aseem.diva_preferences.xml
 <string name="password">MonMotDePasse123</string>
 ```
 
-**⚠️ Risque :** Sur un appareil compromis, un attaquant peut lire directement tous les fichiers de l'application.
+** Risque :** Sur un appareil compromis, un attaquant peut lire directement tous les fichiers de l'application.
 
 
 ---
 
-#### 🟠 Test 4 — Vulnérabilité WebView
+####  Test 4 — Vulnérabilité WebView
 
 **Dans DIVA :** Ouvrir `Input Validation Issues` → saisir une URL arbitraire
 
 **Observation :** L'application charge l'URL sans validation dans son WebView interne.
 
-**⚠️ Risque :** XSS, phishing ou exécution de code malveillant depuis l'intérieur de l'application.
+** Risque :** XSS, phishing ou exécution de code malveillant depuis l'intérieur de l'application.
 
 
 ---
 
-#### 🟡 Test 5 — Cryptographie Faible (Weak Cryptography)
+####  Test 5 — Cryptographie Faible (Weak Cryptography)
 
 **Observation via MobSF :** Utilisation de `MD5` ou `DES` détectée dans le code.
 
-**⚠️ Risque :** Les données chiffrées peuvent être décryptées facilement avec des outils modernes.
+** Risque :** Les données chiffrées peuvent être décryptées facilement avec des outils modernes.
 
 
 ---
